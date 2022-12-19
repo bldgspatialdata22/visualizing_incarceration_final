@@ -1,0 +1,19 @@
+---
+title: "About"
+about:
+  template: jolla
+  image: /bin/alicia_graphic.png
+  links:
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com/aliciacsabatino/
+    - icon: github
+      text: Github
+      href: https://github.com/sabatinoalicia/
+---
+
+About this site
+
+This site was made for the final project for GES 660. GES 660 was taught by [Eli Pousson](https://elipousson.github.io/) at UMBC in the GES department.
+
+In **GES 660: Building Spatial Datasets** we are learning how to work with spatial data for research and practice with open-source tools. One of those tools we are encouraged to use is quarto with R and github. This class was my first exposure to quarto and quarto sites.

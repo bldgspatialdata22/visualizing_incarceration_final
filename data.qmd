@@ -1,0 +1,149 @@
+---
+title: "Getting the Data"
+bibliography: bin/references.bib
+---
+
+*note: these scripts do not run and the project environment does not come with all the packages and their dependencies, these scripts were provided to show how data was acquired for this project. Required packages are included at the top of the each chunk, however. You will also have to set up paths and provide a token and username, etc.*
+
+### FamHIS
+
+The source for the estimates for how many people had an immediate family member that had been incarcerated was [The FamHIS Study](https://journals.sagepub.com/doi/10.1177/2378023119829332#articleCitationDownloadContainer) [@ennsWhatPercentageAmericans2019b] . This study in conjunction with the 2018 5 year ACS (American Community Survey) block group level data were the foundation for the dots in the dot density map. For the purposes of this project and the accompanying time, money, space limitations the study area was limited to Maryland. Since Maryland is located in the South I used the average estimates by race multiplied by 1.088 which could be used as a factor for how much the rate would increase in that particular census region. This was determined from the statistics provided in the study. It is important to remember that both the numbers from the ACS the FamHIS are estimates with margins of error and are not exact numbers.
+
+### ACS
+
+2018 5 year ACS (American Community Survey) block group level data were gathered and transformed in R and QGIS \[[@PopulationRaceStatistics2018]\].
+
+```{r}
+#| eval: false 
+#| echo: true
+
+library(tidycensus)
+library(tidyverse)
+library(tigris)
+library(sf)
+
+
+# grab maryland 2018 acs 5 year block group data 
+
+maryland_2018 <- get_acs(geography = "block group", 
+                         variables = c("pop" = "B03002_001", # Total
+                                       "pop_nhwhite" = "B03002_003", # NH White
+                                        "pop_nhblack" = "B03002_004", # NH Black
+                                        "pop_nhamind" = "B03002_005", # NH Am Ind
+                                        "pop_nhasian" = "B03002_006", # NH Asian
+                                        "pop_nhhwnpi" = "B03002_007", # NH Hawaiin/PI
+                                        "pop_nhother" = "B03002_008", # One Other
+                                        "pop_nhtwomr" = "B03002_009", # Two+
+                                        "pop_hispltx" = "B03002_012"), # Hispanic/Latinx
+                          
+                          year = 2018,
+                          survey = "acs5",
+                          state = c("MD"), 
+                          geometry = TRUE, 
+                          output="wide")
+
+
+# manipulate columns so they make sense for final categories
+
+maryland_2018$pop_nhotherXE <- maryland_2018$pop_nhotherE + maryland_2018$pop_nhtwomrE + maryland_2018$pop_nhasianE + maryland_2018$pop_nhhwnpiE
+
+
+# pivot for dot density render
+
+maryland_to_pivot <- maryland_2018 
+
+maryland_to_pivot <- select(maryland_2018, -ends_with("M"))
+
+maryland_to_pivot <- select(maryland_to_pivot, -pop_nhasianXE)
+
+maryland_to_pivot <- maryland_to_pivot %>%
+  rename(pop = popE,
+         e_white = pop_nhwhiteE,
+         e_black =  pop_nhblackE,
+         e_amind = pop_nhamindE, 
+         e_other = pop_nhotherXE, 
+         e_hispanic = pop_hispltxE)
+
+maryland_to_pivot <- select(maryland_to_pivot, -pop_nhtwomrE)
+
+maryland_to_pivot <- select(maryland_to_pivot, -pop)
+
+maryland_to_pivot <- maryland_to_pivot %>%
+  pivot_longer(
+    cols = starts_with("e_"),
+    names_to = "ethnicity",
+    names_prefix = "e_",
+    values_to = "count",
+    values_drop_na = FALSE
+  )
+
+```
+
+This pivoted data was then used to generate points in polygons in QGIS. Each point had an associated ethnicity. Then the data was multiplied by the percentages taken from the FamHIS study.
+
+### Prisons and Jails
+
+The prisons and jails dataset comes from the decennial census which I have fetched using R is based on [this script](https://www.gl-li.com/2018/02/05/map-prisons-in-the-united-states/) [@PrisonsJailsCity2010].
+
+```{r}
+#| eval: false 
+#| echo: true
+
+library(totalcensus)  
+library(tidyverse)
+
+set_path_to_census(here::here("data"))
+# fetch prisons and jails
+pris_pop <- read_decennial(
+  year = 2010,
+  states = "MD",
+  table_contents = c(
+    "total = PCT0200003",
+    "fed_pris = PCT0200005",
+    "state_pris = PCT0200006",
+    "local_jail = PCT0200007"
+  ),
+  summary_level = "county subdivision",
+  show_progress = FALSE
+) %>%
+  # remove county subdivisions that has no prison population
+  filter(fed_pris != 0 | state_pris != 0 | local_jail != 0) %>%
+  mutate(fed_pris = ifelse(fed_pris == 0, NA, fed_pris)) %>%
+  mutate(state_pris = ifelse(state_pris == 0, NA, state_pris)) %>%
+  mutate(local_jail = ifelse(local_jail == 0, NA, local_jail)) %>%
+  select(lon, lat, NAME, fed_pris, state_pris, local_jail) %>%
+  gather(key = "type", value = "inmates", -c(lon, lat, NAME)) %>%
+  filter(!is.na(inmates)) %>%
+  mutate(type = factor(
+    type,
+    levels = c("local_jail", "state_pris", "fed_pris")
+  )) %>%
+  arrange(-inmates)
+readr::write_rds(pris_pop, here::here("data/pris_pop.rds"))
+
+```
+
+### Mapping Tiles
+
+To create the tiles for the web app visualization I had to install [tippecanoe](https://github.com/mapbox/tippecanoe) and Homebrew on OSX and then run a script to create the tiles in R and then push the tiles onto my mapbox account. I also referenced [this tutorial](https://walker-data.com/mapboxapi/articles/creating-tiles.html) by Kyle Walker for creating tiles.
+
+```{r}
+#| eval: false 
+#| echo: true
+
+library(mapboxapi)
+
+# create tiles
+tippecanoe(input = "md_2018_dots.geojson",
+           output = "md_2018_dots.mbtiles",
+           layer_name = "md_2018_dots")
+
+
+# upload tiles
+upload_tiles(input = "md_vis_incarceration_4326.mbtiles", username = "username", access_token = "token",
+             tileset_id = "md_vis_incarceration",
+             multipart = TRUE)
+
+
+
+```

@@ -1,0 +1,86 @@
+---
+title: "The Scope of Mass Incarceration"
+---
+
+## Project Description
+
+The true scope of mass incarceration cannot be realized without understanding how this system affects families and communities around the country. Studies show that an estimated 1 in 2 people in the United States have a parent, partner or sibling that has been incarcerated.
+
+This map uses population frequencies by race. Overall, 42% of white people, 48% of hispanic people, 63% of Black people, and 63% of Native people have a parent, partner or sibling that has been incarcerated at a prison or jail. When you look at both gender and race, Black women are most likely to know an immediate family member or partner that has been incarcerated. Future visualizations will account for income, education level, and region.
+
+If you click a facility, you can see the district name, number of inmates, and facility type. Resources to learn more are below the map. 
+
+
+## Visualization
+
+``` {r message = FALSE, warning= FALSE, echo = FALSE}
+#| column: screen
+
+library(mapboxapi)
+library(leaflet)
+library(sf)
+
+pris_pop <-st_read("https://raw.githubusercontent.com/sabatinoalicia/sabatinoalicia.github.io/main/data/md_prisons.geojson", quiet= TRUE)
+
+ethnicities <- c("white", "black", "hispanic", "native", "other")
+colors <- c("#6C26E3", "#C8A437", "#DC2E2E", "#62EA8F" , "#EA1AE6")
+
+df <- data.frame (ethnicity  = ethnicities,
+                  numbers = c(1,2,3,4,5))
+
+
+pal <- colorFactor(
+  palette = c( "#C8A437","#DC2E2E", "#EA1AE6", "#62EA8F" , "#6C26E3"),
+  domain =  df$ethnicity
+)
+
+html_legend <- "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Circle_Grey_Solid.svg/1200px-Circle_Grey_Solid.svg.png'width='7' height='7'> federal prison<br/>
+<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Triangle_gray.svg/1200px-Triangle_gray.svg.png' width='7' height='7'> state prison<br/>
+<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/1200px-Square_gray.svg.png' width='7' height='7'> local jail"
+
+markers <- iconList(
+  "fed_pris" = makeIcon(
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Circle_Grey_Solid.svg/1200px-Circle_Grey_Solid.svg.png",
+    iconWidth = 7,
+    iconHeight = 7
+  ),
+  "state_pris" = makeIcon(
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Triangle_gray.svg/1200px-Triangle_gray.svg.png",
+    iconWidth = 7,
+    iconHeight = 7
+  ),
+  "local_jail" = makeIcon(
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/1200px-Square_gray.svg.png",
+    iconWidth = 7,
+    iconHeight = 7
+  )
+)
+
+leaflet() %>%
+  setView(-76.6122,39.2904, zoom = 8)  %>%
+  addMapboxTiles(style_id = "clbayh4cd000115qlo4mprr4r",
+                 username = "alicia15") %>%
+  addLegend(pal = pal, values = df$ethnicity, title = "Ethnicity") %>%
+  addMarkers(lng = pris_pop$lon, lat = pris_pop$lat, icon = markers[pris_pop$type],
+            popup = paste(pris_pop$inmates, "inmates,", pris_pop$NAME)) %>%
+  addControl(html = html_legend, position = "bottomleft")
+
+```
+
+## Process
+
+This project aims to visualize the true scope of mass incarceration, not just prisons + jails, but **those impacted**. While no spatial data on this existed, a study from researchers at Cornell published in 2019 created estimates associated with various demographics estimated how many people in the United States had an Immediate Family Member that was incarcerated. For this project, these estimates were visualized using a dot density map with 1 dot = 1 person. 
+
+I was able to produce this visualization using the mapboxapi, leaflet, tidycensus, tidyverse, totalcensus, and tippecanoe packages along with data from the American Community Survey and the Decennial Census. 
+
+## Next Steps
+
+-   adding the qualitative data and pop-ups
+
+-   adding more capability to the site, adding more javascript and html elements to add more context for the users of the site
+
+-   now that I know this works, and i already have the data, extending this to the entire US
+
+## Learn More
+
+[Cornell Study](https://journals.sagepub.com/doi/10.1177/2378023119829332#articleCitationDownloadContainer) | [Bail Funds by State](https://bailfunds.github.io/) | [Abolition Reading List](https://abolitionistfutures.com/full-reading-list)

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visualizing Incarceration - The Scope of Mass Incarceration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="site_libs/htmlwidgets-1.6.0/htmlwidgets.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-binding-2.1.1/leaflet.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Visualizing Incarceration</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.html">Getting the Data</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./map.html">Map</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#project-description" id="toc-project-description" class="nav-link active" data-scroll-target="#project-description">Project Description</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
+  <li><a href="#process" id="toc-process" class="nav-link" data-scroll-target="#process">Process</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#learn-more" id="toc-learn-more" class="nav-link" data-scroll-target="#learn-more">Learn More</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Scope of Mass Incarceration</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="project-description" class="level2">
+<h2 class="anchored" data-anchor-id="project-description">Project Description</h2>
+<p>The true scope of mass incarceration cannot be realized without understanding how this system affects families and communities around the country. Studies show that an estimated 1 in 2 people in the United States have a parent, partner or sibling that has been incarcerated.</p>
+<p>This map uses population frequencies by race. Overall, 42% of white people, 48% of hispanic people, 63% of Black people, and 63% of Native people have a parent, partner or sibling that has been incarcerated at a prison or jail. When you look at both gender and race, Black women are most likely to know an immediate family member or partner that has been incarcerated. Future visualizations will account for income, education level, and region.</p>
+<p>If you click a facility, you can see the district name, number of inmates, and facility type. Resources to learn more are below the map.</p>
+</section>
+<section id="visualization" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-screen">
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-00521e555d2372f34302" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-00521e555d2372f34302">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[39.2904,-76.6122],8,[]],"calls":[{"method":"addTiles","args":["https://api.mapbox.com/styles/v1/alicia15/clbayh4cd000115qlo4mprr4r/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpY2lhMTUiLCJhIjoiY2wxcGQ3b241MDk3YjNkb2RrN203OHBvbCJ9.vxJq0xPwzaBECIrzqz2iqQ",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://www.mapbox.com/about/maps/\">Mapbox<\/a> &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a> <strong><a href=\"https://www.mapbox.com/map-feedback/\" target=\"_blank\">Improve this map<\/a><\/strong>"}]},{"method":"addLegend","args":[{"colors":["#C8A437","#DC2E2E","#EA1AE6","#62EA8F","#6C26E3"],"labels":["black","hispanic","native","other","white"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"factor","title":"Ethnicity","extra":null,"layerId":null,"className":"info legend","group":null}]},{"method":"addMarkers","args":[[39.3002135,39.1738656,39.5337631,38.121626,39.5927684,39.6326966,39.6055947,39.5856532,39.4017373,38.805245,39.2082716,39.2312843,38.9713568,39.3952452,38.3765204,39.4197408,39.6441932,38.5086192,39.553667,38.2107913,39.1738656,38.5482265,38.264976,39.2082716,39.5793175,39.634795,39.1411583,39.0753938,38.5587658,39.5856532,38.366718,38.8624326,38.79228,39.0507231,38.121626,39.2277772,39.6029763,39.4130102,39.7031543,39.6792293,39.1618116,39.6225457],[-76.6105159,-76.671519,-77.7485582,-75.7156304,-77.7152503,-78.8014605,-78.6920261,-78.8504689,-76.5874585,-76.7912595,-76.7514612,-77.2764607,-76.5237475,-76.9293818,-75.6248619,-77.4108678,-77.7761329,-76.9930244,-76.3392085,-75.3138917,-76.671519,-76.600389,-76.6570541,-76.7514612,-77.0048612,-75.851229,-75.9780732,-77.1493656,-76.1263587,-78.8504689,-75.7564986,-75.7768105,-76.1046935,-76.0677403,-75.7156304,-76.0714268,-76.0841021,-79.3813796,-78.7022123,-78.9377523,-76.8355923,-77.7052735],{"iconUrl":{"data":["https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Triangle_gray.svg/1200px-Triangle_gray.svg.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Circle_Grey_Solid.svg/1200px-Circle_Grey_Solid.svg.png","https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/1200px-Square_gray.svg.png"],"index":[0,0,0,0,0,0,1,0,2,2,0,2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,0,2,2,2,0,2,2,2,2,2,0,2,2,2,0,2]},"iconWidth":7,"iconHeight":7},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["5830 inmates, Baltimore city","4716 inmates, District 1","4255 inmates, District 12, Fairplay","3240 inmates, District 13, Westover","1883 inmates, District 10, Funkstown","1655 inmates, District 6, Cumberland","1514 inmates, District 16, North Branch","1426 inmates, District 7, Cresaptown/Bel Air","1322 inmates, District 9","1141 inmates, District 15, Mellwood","807 inmates, District 1, Elkridge","743 inmates, District 2","546 inmates, District 6","514 inmates, District 5, Freedom","511 inmates, District 9, Salisbury","430 inmates, District 2, Frederick","424 inmates, District 24, Cedar Lawn","418 inmates, District 1, La Plata","397 inmates, District 3, Bel Air","329 inmates, District 2, Central","311 inmates, District 1","261 inmates, District 2, Prince Frederick","251 inmates, District 3, Leonardtown","245 inmates, District 1, Elkridge","234 inmates, District 7, Westminster","230 inmates, District 3, Elkton","167 inmates, District 2, Church Hill","160 inmates, District 4","140 inmates, District 7, Cambridge","137 inmates, District 7, Cresaptown/Bel Air","122 inmates, District 2, Quantico","101 inmates, District 3, Denton","101 inmates, District 1, Easton","87 inmates, District 3, Centreville","84 inmates, District 13, Westover","77 inmates, District 4, Chestertown","59 inmates, District 7, Port Deposit","43 inmates, District 7, East Oakland","25 inmates, District 34, Bedford Road","24 inmates, District 11, West Frostburg","10 inmates, District 6, Savage","10 inmates, District 17, Hagerstown"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addControl","args":["<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Circle_Grey_Solid.svg/1200px-Circle_Grey_Solid.svg.png'width='7' height='7'> federal prison<br/>\n<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Triangle_gray.svg/1200px-Triangle_gray.svg.png' width='7' height='7'> state prison<br/>\n<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/1200px-Square_gray.svg.png' width='7' height='7'> local jail","bottomleft",null,"info legend"]}],"limits":{"lat":[38.121626,39.7031543],"lng":[-79.3813796,-75.3138917]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="process" class="level2">
+<h2 class="anchored" data-anchor-id="process">Process</h2>
+<p>This project aims to visualize the true scope of mass incarceration, not just prisons + jails, but <strong>those impacted</strong>. While no spatial data on this existed, a study from researchers at Cornell published in 2019 created estimates associated with various demographics estimated how many people in the United States had an Immediate Family Member that was incarcerated. For this project, these estimates were visualized using a dot density map with 1 dot = 1 person.</p>
+<p>I was able to produce this visualization using the mapboxapi, leaflet, tidycensus, tidyverse, totalcensus, and tippecanoe packages along with data from the American Community Survey and the Decennial Census.</p>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<ul>
+<li><p>adding the qualitative data and pop-ups</p></li>
+<li><p>adding more capability to the site, adding more javascript and html elements to add more context for the users of the site</p></li>
+<li><p>now that I know this works, and i already have the data, extending this to the entire US</p></li>
+</ul>
+</section>
+<section id="learn-more" class="level2">
+<h2 class="anchored" data-anchor-id="learn-more">Learn More</h2>
+<p><a href="https://journals.sagepub.com/doi/10.1177/2378023119829332#articleCitationDownloadContainer">Cornell Study</a> | <a href="https://bailfunds.github.io/">Bail Funds by State</a> | <a href="https://abolitionistfutures.com/full-reading-list">Abolition Reading List</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
