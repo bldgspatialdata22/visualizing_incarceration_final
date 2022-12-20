@@ -1,5 +1,7 @@
 # Visualizing Incarceration Final Project
 
+This README includes information about my GES 660 Final Project.
+
 ## Intro
 
 This project aimed to visualize the true scope of mass incarceration, not only by mapping prisons and jails but also by mapping those impacted by incarceration. The visualizaiton produced for this project maps those with am immediate family member (parent, sibling, child) that has been incarcerated in the state of Maryland using dot density. This was a trial of methods that will be expanded to the entire United States. Studies show that an estimated 1 in 2 people in the United States have a parent, partner or sibling that has been incarcerated, but this depends on different demographics including race and region, which were considered in this visualization.
